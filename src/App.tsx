@@ -1,15 +1,12 @@
-import { useInfiniteScroll } from 'ahooks';
-import { useState } from 'react'
-import './App.less'
+import './App.less';
 import InfinityScroll from './components/InfiniteScroll';
 
 function App() {
-  
   return (
     <div className="App">
-      <InfinityScroll/>
+      <InfinityScroll />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

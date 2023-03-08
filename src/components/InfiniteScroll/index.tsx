@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
 import { useInfiniteScroll } from 'ahooks';
+import React, { useRef } from 'react';
 import cet4 from '../../assets/cet4_word.json';
-import './index.less';
 import { WORD } from '../../types';
-import WordSpellItem from '../WordSpellItem';
 import { getRandomStr } from '../../utils/random';
+import WordSpellItem from '../WordSpellItem';
+import './index.less';
 
 interface Result {
   list: WORD[];
@@ -33,25 +33,21 @@ function getLoadMoreList(nextId: string | undefined, limit: number): Promise<Res
 const InfinityScroll = () => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const { data, loading, loadMore, loadingMore, noMore } = useInfiniteScroll(
-    (d) => getLoadMoreList(d?.nextId, 4),
-    {
-      target: ref,
-      isNoMore: (d) => d?.nextId === undefined,
-    },
-  );
+  const { data, loading, loadMore, loadingMore, noMore } = useInfiniteScroll((d) => getLoadMoreList(d?.nextId, 4), {
+    target: ref,
+    isNoMore: (d) => d?.nextId === undefined,
+  });
 
   return (
-    <div className='infinite-scroll-tab' ref={ref}>
+    <div className="infinite-scroll-tab" ref={ref}>
       {loading ? (
         <p>loading</p>
       ) : (
-        <div className='infinite-scroll-list-contain'>
+        <div className="infinite-scroll-list-contain">
           {data?.list?.map((item) => {
-  const randomStr = getRandomStr();
-            return <WordSpellItem item={item} key={item.word + '-' + randomStr}/>
-          })
-          }
+            const randomStr = getRandomStr();
+            return <WordSpellItem item={item} key={item.word + '-' + randomStr} />;
+          })}
         </div>
       )}
 

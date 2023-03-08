@@ -1,9 +1,12 @@
 {
-  "useTabs": true,
-  "eslintIntegration": true,
-    "stylelintIntegration": true,
-    "tabWidth": 2,
-    "singleQuote": true,
-    "semi": true,
-    "printWidth": 150
+  "printWidth": 120,
+  "tabWidth": 2,
+  "tabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "quoteProps": "as-needed",
+  "tailingComma": "all",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "arrowParens": "always"
 }
