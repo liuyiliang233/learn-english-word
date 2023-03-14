@@ -1,24 +1,33 @@
 import Checkbox from 'antd/es/checkbox/Checkbox';
+import Item from 'antd/es/list/Item';
 import cx from 'classnames';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { WORD } from '../../types';
+import { showConfetti } from '../Confetti';
 import SpellInput from '../SpellInput';
 import './index.less';
 
-function WordSpellItem(props: { item: WORD }) {
+const WordSpellItem: React.FC<{
+  item: WORD;
+}> = (props) => {
   const { item } = props;
   const [isValid, changeValid] = useState(false);
   const [showWord, changingWordStatus] = useState(false);
   function isValidFc(isValid: boolean) {
-    changeValid(isValid);
+    if (isValid) {
+      changeValid(true);
+      changingWordStatus(true);
+    }
   }
-
+  useEffect(() => {
+    if (isValid) showConfetti();
+  }, [isValid]);
   return (
-    <div className="word-spell-item" {...props}>
-      <span className={cx('word', { 'hide-word': !showWord })} onClick={() => changingWordStatus(!showWord)}>
+    <div className={`word-spell-item ${isValid ? 'disable-item' : ''}`}>
+      <span className={cx('word', { 'hide-word': !showWord })} onClick={() => changingWordStatus(true)}>
         {item.word}
       </span>
-      <span className="meaning hide-text">
+      <span className="meaning single-overflow-text">
         {item.parts}
         {'  ' + item.meaning}
       </span>
@@ -28,8 +37,9 @@ function WordSpellItem(props: { item: WORD }) {
       <span className="judge">
         <Checkbox style={{ pointerEvents: 'none' }} checked={isValid} />
       </span>
+      {isValid && <div className="mask"></div>}
     </div>
   );
-}
+};
 
 export default WordSpellItem;

@@ -1,5 +1,5 @@
 import { useInfiniteScroll } from 'ahooks';
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import cet4 from '../../assets/cet4_word.json';
 import { WORD } from '../../types';
 import { getRandomStr } from '../../utils/random';
@@ -30,7 +30,7 @@ function getLoadMoreList(nextId: string | undefined, limit: number): Promise<Res
   });
 }
 
-const InfinityScroll = () => {
+const InfinityScroll: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const { data, loading, loadMore, loadingMore, noMore } = useInfiniteScroll((d) => getLoadMoreList(d?.nextId, 4), {
@@ -45,8 +45,7 @@ const InfinityScroll = () => {
       ) : (
         <div className="infinite-scroll-list-contain">
           {data?.list?.map((item) => {
-            const randomStr = getRandomStr();
-            return <WordSpellItem item={item} key={item.word + '-' + randomStr} />;
+            return <WordSpellItem item={item} key={item.word} />;
           })}
         </div>
       )}
