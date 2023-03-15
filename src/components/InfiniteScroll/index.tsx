@@ -10,21 +10,21 @@ interface Result {
   list: WORD[];
   nextId: string;
 }
-const wordList = cet4;
+const wordList = cet4 as WORD[];
 
 function getLoadMoreList(nextId: string | undefined, limit: number): Promise<Result> {
   let start = 0;
   if (nextId) {
-    start = wordList.findIndex((i) => i === nextId);
+    start = wordList.findIndex((i) => i.word === nextId);
   }
   const end = start + limit;
-  const list = wordList.slice(start, end);
+  const list = wordList.slice(start, end) as WORD[];
   const nId = wordList.length >= end ? wordList[end] : undefined;
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         list,
-        nextId: nId,
+        nextId: nId?.word || '',
       });
     }, Math.random() * 2000 + 1000);
   });
@@ -33,9 +33,9 @@ function getLoadMoreList(nextId: string | undefined, limit: number): Promise<Res
 const InfinityScroll: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const { data, loading, loadMore, loadingMore, noMore } = useInfiniteScroll((d) => getLoadMoreList(d?.nextId, 4), {
+  const { data, loading, loadMore, loadingMore, noMore } = useInfiniteScroll((d) => getLoadMoreList(d?.nextId, 8), {
     target: ref,
-    isNoMore: (d) => d?.nextId === undefined,
+    isNoMore: (d) => d?.nextId === '',
   });
 
   return (
@@ -57,7 +57,7 @@ const InfinityScroll: React.FC = () => {
           </button>
         )}
 
-        {noMore && <span>--底线--</span>}
+        {noMore && <span>没有更多了～</span>}
       </div>
     </div>
   );

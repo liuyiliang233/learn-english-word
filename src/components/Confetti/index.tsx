@@ -6,7 +6,7 @@ const confetti = new JSConfetti();
 
 export function showConfetti() {
   confetti.addConfetti({
-    confettiNumber: 88,
+    confettiNumber: 30,
     confettiRadius: 8,
   });
 }

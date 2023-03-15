@@ -2,6 +2,8 @@ import Checkbox from 'antd/es/checkbox/Checkbox';
 import Item from 'antd/es/list/Item';
 import cx from 'classnames';
 import React, { useEffect, useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
+import { IDispatch, store } from '../../store';
 import { WORD } from '../../types';
 import { showConfetti } from '../Confetti';
 import SpellInput from '../SpellInput';
@@ -13,10 +15,12 @@ const WordSpellItem: React.FC<{
   const { item } = props;
   const [isValid, changeValid] = useState(false);
   const [showWord, changingWordStatus] = useState(false);
+  const dispatch = useDispatch<IDispatch>();
   function isValidFc(isValid: boolean) {
     if (isValid) {
       changeValid(true);
       changingWordStatus(true);
+      dispatch.app.increase(null);
     }
   }
   useEffect(() => {
@@ -24,7 +28,7 @@ const WordSpellItem: React.FC<{
   }, [isValid]);
   return (
     <div className={`word-spell-item ${isValid ? 'disable-item' : ''}`}>
-      <span className={cx('word', { 'hide-word': !showWord })} onClick={() => changingWordStatus(true)}>
+      <span className={cx('word', { 'hide-word': !showWord })} onClick={() => changingWordStatus(!showWord)}>
         {item.word}
       </span>
       <span className="meaning single-overflow-text">
@@ -35,7 +39,7 @@ const WordSpellItem: React.FC<{
         <SpellInput word={item.word} spellCB={isValidFc} />
       </span>
       <span className="judge">
-        <Checkbox style={{ pointerEvents: 'none' }} checked={isValid} />
+        <Checkbox checked={isValid} />
       </span>
       {isValid && <div className="mask"></div>}
     </div>
